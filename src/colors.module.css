@@ -1,0 +1,18 @@
+.colorsLine {
+  padding-top: 30px;
+}
+
+.color {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+
+  display: inline-block;
+}
+
+.colorActive {
+  width: 27px;
+  height: 27px;
+
+  border: 3px solid white;
+}
