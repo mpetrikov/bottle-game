@@ -1,24 +1,47 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback } from 'react';
 
-import { Colors } from "./Colors";
+import { Colors } from './Colors';
+import { Bottles } from './Bottles';
 
-import { useColors } from "./useColors";
+import { useColors } from './useColors';
+import { useBottles } from './useBottles';
+import { useSolveLevel } from './useSolveLevel';
 
 export function Application() {
-  const { colors, activeColorId, chooseColor, getActiveColor } = useColors();
+    const [bottlesCount] = useState(9);
 
-  // const [bottlesCount] = useState({
-  //   line1BottlesNumber: 7,
-  //   line2BottlesNumber: 7,
-  // });
+    const { colors, activeColorId, chooseColor, getActiveColor } = useColors(bottlesCount);
+    const { bottles, setUpBottleColor, saveBottlesColors, loadBottlesColors } = useBottles(bottlesCount);
 
-  return (
-    <div>
-      <Colors
-        colors={colors}
-        chooseColor={chooseColor}
-        activeColorId={activeColorId}
-      />
-    </div>
-  );
+    const { solveLevel } = useSolveLevel();
+
+    const chooseColorFromBottle = useCallback(
+        (bottleId, liquidPosition) => {
+            const activeColor = getActiveColor();
+
+            setUpBottleColor(bottleId, liquidPosition, activeColor);
+        },
+        [getActiveColor, setUpBottleColor],
+    );
+
+    const solveLevelCallback = useCallback(() => {
+        solveLevel(bottles);
+    }, [solveLevel, bottles]);
+
+    return (
+        <div>
+            <div>
+                <button onClick={saveBottlesColors}>Save game field</button>
+            </div>
+            <div>
+                <button onClick={loadBottlesColors}>Load game field</button>
+            </div>
+            <div>
+                <button onClick={solveLevelCallback}>Solve level</button>
+            </div>
+            <Colors colors={colors} chooseColor={chooseColor} activeColorId={activeColorId} />
+
+            <Bottles bottlesInfo={bottles} chooseColor={chooseColorFromBottle}></Bottles>
+        </div>
+    );
 }

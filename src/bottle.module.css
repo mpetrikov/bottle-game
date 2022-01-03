@@ -1,11 +1,21 @@
-.colorsLine {
-  padding-top: 30px;
+.bottle {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+
+    width: 50px;
+    height: 200px;
+
+    border: 1px solid white;
+
+    margin-right: 10px;
 }
 
-.color {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
+.bottleLiquid {
+    width: 50px;
+    height: calc(200px / 4);
 
-  display: inline-block;
+    float: right;
+
+    outline: 1px solid black;
 }

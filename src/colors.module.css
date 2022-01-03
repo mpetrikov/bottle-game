@@ -10,6 +10,10 @@
   display: inline-block;
 }
 
+.color:hover {
+  cursor: pointer;
+}
+
 .colorActive {
   width: 27px;
   height: 27px;

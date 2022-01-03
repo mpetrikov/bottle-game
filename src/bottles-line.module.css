@@ -1,11 +1,5 @@
-.colorsLine {
-  padding-top: 30px;
-}
-
-.color {
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-
-  display: inline-block;
+.bottleLine {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

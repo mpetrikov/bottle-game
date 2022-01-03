@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import styles from "./colors.module.css";
 
 export const Colors = ({ colors: colorsData, activeColorId, chooseColor }) => {
-  console.log("activecolor id rerender");
-
   const chooseColorLocal = useCallback(
     (e) => {
       chooseColor(Number(e.target.getAttribute("data-color-id")));
