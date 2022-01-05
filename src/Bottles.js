@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import PropTypes from 'prop-types';
 import styles from './bottles-line.module.css';
+import { numberOfBottlesInFirstLine } from './constants';
 
 import { Bottle } from './Bottle';
 
@@ -18,12 +19,12 @@ export const Bottles = ({ bottlesInfo, chooseColor }) => {
     return (
         <>
             <div className={styles.bottleLine} onClick={chooseColorLocal}>
-                {bottlesInfo.slice(0, 5).map((bottleInfo) => (
+                {bottlesInfo.slice(0, numberOfBottlesInFirstLine).map((bottleInfo) => (
                     <Bottle bottleId={bottleInfo.id} key={bottleInfo.id} colors={bottleInfo.colors} />
                 ))}
             </div>
             <div className={styles.bottleLine} onClick={chooseColorLocal}>
-                {bottlesInfo.slice(5).map((bottleInfo) => (
+                {bottlesInfo.slice(numberOfBottlesInFirstLine).map((bottleInfo) => (
                     <Bottle bottleId={bottleInfo.id} key={bottleInfo.id} colors={bottleInfo.colors} />
                 ))}
             </div>

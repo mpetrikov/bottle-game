@@ -9,9 +9,9 @@ export const useColors = (numberOfBottles) => {
         { colorName: '#EA5E7B', id: 8 },
         { colorName: '#626365', id: 1 },
         { colorName: '#55A3E5', id: 7 },
-        { colorName: '#F1DA57', id: 3 },
-        { colorName: '#722B93', id: 5 },
         { colorName: '#78970F', id: 6 },
+        { colorName: '#722B93', id: 5 },
+        { colorName: '#F1DA57', id: 3 },
         { colorName: '#7D4A08', id: 9 },
         { colorName: '#205B39', id: 11 },
     ]);

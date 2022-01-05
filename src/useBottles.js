@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useLocalStorage } from './useLocalStorage';
 import { defaultBottleColor } from './constants';
+import { getLiquidInfoFromTop, getTopSpaceInfo } from './getLiquidInfo';
+import { copyBottles } from './copyBottles';
 
 const createEmptyBottle = () => {
     return {
@@ -67,11 +69,29 @@ export const useBottles = (numberOfBottles) => {
         // TODO: check
     };
 
+    const moveLiquid = (from, to) => {
+        const newBottles = copyBottles(bottles);
+
+        const fromLiquidInfo = getLiquidInfoFromTop(newBottles[from].colors);
+        let toSpaceInfo = getTopSpaceInfo(newBottles[to].colors);
+
+        const fromBottleResult = newBottles[from];
+        const toBottleResult = newBottles[to];
+
+        for (let i = 0; i < fromLiquidInfo.size; i++) {
+            toBottleResult.colors[toSpaceInfo.size - 1 - i] = fromLiquidInfo.color;
+            fromBottleResult.colors[fromLiquidInfo.position + i] = defaultBottleColor;
+        }
+
+        setBottles(newBottles);
+    };
+
     return {
         bottles,
         setUpBottleColor,
         saveBottlesColors,
         loadBottlesColors,
         checkColorCorrectness,
+        moveLiquid,
     };
 };

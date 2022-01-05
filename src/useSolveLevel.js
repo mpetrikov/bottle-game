@@ -1,4 +1,6 @@
 import { defaultBottleColor } from './constants';
+import { getLiquidInfoFromTop, getTopSpaceInfo } from './getLiquidInfo';
+import { copyBottles } from './copyBottles';
 
 const checkGameFinished = (bottles) => {
     return bottles.every((bottle) => {
@@ -12,43 +14,6 @@ const checkGameFinished = (bottles) => {
 
 const generateStateOfLevel = (bottles) => {
     return bottles.map((bottle) => bottle.colors.join(',')).join(',');
-};
-
-const getLiquidInfoFromTop = (colors) => {
-    let isEmpty = colors.every((color) => color === defaultBottleColor);
-    if (isEmpty) return null;
-
-    let colorPosition = 0;
-    while (colors[colorPosition] === defaultBottleColor) colorPosition++;
-
-    const topColor = colors[colorPosition];
-    let size = 1;
-
-    for (let i = colorPosition + 1; i < colors.length; i++) {
-        if (topColor === colors[i]) size++;
-        else break;
-    }
-
-    return { color: topColor, size, position: colorPosition };
-};
-
-const getTopSpaceInfo = (colors) => {
-    if (colors[0] !== defaultBottleColor) return null;
-
-    const topColor = defaultBottleColor;
-    let size = 1;
-
-    for (let i = 1; i < colors.length; i++) {
-        if (topColor === colors[i]) size++;
-        else break;
-    }
-
-    let availableColor = null;
-    if (size !== 4) {
-        availableColor = colors[size];
-    }
-
-    return { size, availableColor };
 };
 
 const findAllMovements = (bottles) => {
@@ -69,6 +34,14 @@ const findAllMovements = (bottles) => {
 
             if (topSpaceInfo === null) continue;
 
+            // remove full transfusion from one bottle to empty
+            if (
+                topSpaceInfo.size === 4 &&
+                (topLiquidInfo === null || topLiquidInfo.size + topLiquidInfo.position === 4)
+            ) {
+                continue;
+            }
+
             if (
                 topLiquidInfo !== null &&
                 (topSpaceInfo.availableColor === null ||
@@ -82,10 +55,6 @@ const findAllMovements = (bottles) => {
     return movementsInfo;
 };
 
-const copyBottles = (bottles) => {
-    return bottles.map((bottle) => ({ colors: [...bottle.colors], id: bottle.id }));
-};
-
 const doMove = (bottles, movement) => {
     const newBottles = copyBottles(bottles);
 
@@ -94,8 +63,6 @@ const doMove = (bottles, movement) => {
 
     const bottleFromInfo = getLiquidInfoFromTop(bottleFrom.colors);
     const bottleToInfo = getTopSpaceInfo(bottleTo.colors);
-
-    const bottleFromInfo1 = getLiquidInfoFromTop(bottleFrom.colors);
 
     for (let i = 0; i < bottleFromInfo.size; i++) {
         bottleTo.colors[bottleToInfo.size - 1 - i] = bottleFrom.colors[bottleFromInfo.position + i];
@@ -107,7 +74,7 @@ const doMove = (bottles, movement) => {
 
 export const useSolveLevel = () => {
     const solveLevel = (bottles) => {
-        const bottlesPosition = [{ bottles, moves: [] }];
+        let bottlesPosition = [{ bottles, moves: [] }];
         const positionHashes = { [generateStateOfLevel(bottles)]: true };
 
         let isLevelSolved = false;
@@ -115,8 +82,6 @@ export const useSolveLevel = () => {
 
         while (bottlesPosition.length > 0) {
             const currentPositionInfo = bottlesPosition.shift();
-            // console.log('moves size', currentPositionInfo.moves.length);
-            // console.log('positionHashes length', Object.keys(positionHashes).length);
 
             const allMovements = findAllMovements(currentPositionInfo.bottles);
 
@@ -134,13 +99,13 @@ export const useSolveLevel = () => {
                 if (positionHashes[newPositionHash]) continue;
 
                 positionHashes[newPositionHash] = true;
-                bottlesPosition.push({ bottles: newPosition, moves: newMoves });
+                bottlesPosition = [{ bottles: newPosition, moves: newMoves }, ...bottlesPosition];
             }
 
             if (isLevelSolved) break;
         }
 
-        console.log('levelSolution', levelSolution);
+        return levelSolution;
     };
 
     return {
