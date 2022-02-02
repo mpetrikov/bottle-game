@@ -9,9 +9,12 @@ import { Bottle } from './Bottle';
 export const Bottles = ({ bottlesInfo, chooseColor }) => {
     const chooseColorLocal = useCallback(
         (e) => {
-            const bottleId = Number(e.target.parentElement.getAttribute('data-bottle-id'));
-            const liquidPosition = Number(e.target.getAttribute('data-liquid-position'));
-            chooseColor(bottleId, liquidPosition);
+            const bottleId = e.target.parentElement.getAttribute('data-bottle-id');
+            const liquidPosition = e.target.getAttribute('data-liquid-position');
+
+            if (bottleId === null || liquidPosition === null) return;
+
+            chooseColor(Number(bottleId), Number(liquidPosition));
         },
         [chooseColor],
     );

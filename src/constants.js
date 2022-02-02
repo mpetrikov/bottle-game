@@ -1,3 +1,3 @@
 export const defaultBottleColor = 'white';
-export const numberOfBottles = 11;
-export const numberOfBottlesInFirstLine = 6;
+export const numberOfBottles = 14;
+export const numberOfBottlesInFirstLine = 7;
