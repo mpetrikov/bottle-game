@@ -10,9 +10,7 @@ export const Bottle = ({ colors, bottleId }) => {
                     data-liquid-position={index}
                     className={styles.bottleLiquid}
                     style={{ backgroundColor: color }}
-                >
-                    {bottleId}
-                </div>
+                ></div>
             ))}
         </div>
     );
